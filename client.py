@@ -3,8 +3,15 @@ from tkinter import *
 from tkinter import ttk
 
 root = Tk()
-root.geometry("400x400")
+root.geometry("400x300")
 root.title("Calculator")
+
+# styles
+
+style = ttk.Style()
+style.configure("TButton", font=("Arial", 12), padding=5)
+style.configure("TLabel", font=("Arial", 12), background="#f0f0f0")
+style.configure("TEntry", font=("Arial", 12), padding=5)
 
 PATH = "127.0.0.1"
 PORT = 12345
@@ -22,28 +29,28 @@ def calculate():
       result = eval(expr)
       string = f"{expr} = {result}"
       operations.append(string)
-      label_exp = Label(root, text=string, background="lightgrey")
+      label_exp = ttk.Label(root, text=string, font=("Arial", 16, "bold"))
       label_exp.pack()
-    except:
-       print("Error")
+    except Exception as e:
+       print(f"Error: {e}")
 
 def send():
     client.send(str(operations).encode())
     print("Data has been sent to the server!")
 
-greeting = Label(root, text="Welcome to the calculator!")
-greeting.pack()
+greeting = ttk.Label(root, text="Welcome to the calculator!", font=("Arial", 16, "bold"))
+greeting.pack(pady=10)
 
-lable_enter = Label(root, text="Enter the expression:")
-lable_enter.pack()
+label_enter = ttk.Label(root, text="Enter the expression:")
+label_enter.pack(pady=5)
 
-input = Entry(root, width=50, background="lightgrey")
-input.pack()
+input = ttk.Entry(root, width=30, font=("Arial", 14))
+input.pack(pady=5)
 
-send_btn = Button(root, text="Send", background="lightblue", command=calculate)
-send_btn.pack()
+send_btn = ttk.Button(root, text="Calculate", style="TButton", command=calculate)
+send_btn.pack(pady=10, ipadx=10) 
 
-send_info_to_server = Button(root, text="Send info to server", background="lightgreen", command=send)
-send_info_to_server.pack()
+send_info_to_server = ttk.Button(root, text="Send to Server", style="TButton", command=send)
+send_info_to_server.pack(pady=5, ipadx=10)
 
 root.mainloop()
